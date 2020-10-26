@@ -6,10 +6,12 @@ import org.junit.Test;
 
 public class InvoiceServiceTest {
     private InvoiceGenerator invoiceGenerator;
+
     @Before
     public void init() {
         invoiceGenerator = new InvoiceGenerator();
     }
+
     @Test
     public void givenDistanceAndTime_ShouldReturnTotalFare() {
         double distance = 2.0;
@@ -28,10 +30,20 @@ public class InvoiceServiceTest {
 
     @Test
     public void givenMultipleRides_ShouldReturnInvoiceSummary() {
-        Ride[] rides = { new Ride(2.0, 5),
-                new Ride(0.1, 1) };
+        Ride[] rides = {new Ride(2.0, 5),
+                new Ride(0.1, 1)};
         InvoiceSummary summary = invoiceGenerator.calculateFare(rides);
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
         Assert.assertEquals(expectedInvoiceSummary, summary);
+    }
+
+    @Test
+    public void givenUserId_WhenExistsInRideRepository_ShouldReturnInvoiceSummary() {
+        Ride[] rides = {new Ride(2.0, 5),
+                new Ride(0.1, 1)};
+        invoiceGenerator.addRides(rides, "user1");
+        InvoiceSummary invoiceSummary = invoiceGenerator.getInvoiceSummary("user1");
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
+        Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
     }
 }
