@@ -9,4 +9,12 @@ public class InvoiceGenerator {
         time * COST_PER_TIME;
         return fare>5 ? fare : 5;
     }
+
+    public double calculateFare(Ride[] rides) {
+        double totalFare = 0;
+        for(Ride ride : rides) {
+            totalFare += this.calculateFare(ride.distance, ride.time);
+        }
+        return totalFare;
+    }
 }
